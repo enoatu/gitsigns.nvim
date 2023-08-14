@@ -189,6 +189,7 @@ function M.diff(file_cmp, file_buf, indent_heuristic, diff_algo)
     '-c',
     'core.safecrlf=false',
     'diff',
+    vim.g.gitsigns_head,
     '--color=never',
     '--' .. (indent_heuristic and '' or 'no-') .. 'indent-heuristic',
     '--diff-algorithm=' .. diff_algo,
@@ -541,6 +542,10 @@ end
 function Obj:get_show_text(revision)
   if not self.relpath then
     return {}
+  end
+
+  if vim.g.gitsigns_head ~= '' then
+    revision = vim.g.gitsigns_head
   end
 
   local stdout, stderr = self.repo:get_show_text(revision .. ':' .. self.relpath, self.encoding)
